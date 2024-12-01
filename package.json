@@ -29,5 +29,9 @@
     "typescript": "^5.7.2",
     "vitest": "^2.1.6",
     "vitest-mock-extended": "^2.0.2"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^1.0.5",
+    "ai": "^4.0.9"
   }
 }
