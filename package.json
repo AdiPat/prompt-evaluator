@@ -1,0 +1,33 @@
+{
+  "name": "prompt-evaluator",
+  "version": "1.0.0",
+  "description": "*Your AI module for evaluating prompts like a pro!*",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "test": "vitest --silent --coverage"
+  },
+  "bin": {
+    "prompt-evaluator": "dist/index.js"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "genai",
+    "developer-tools",
+    "prompt-engineering",
+    "tools",
+    "developer"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@vitest/coverage-v8": "^2.1.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6",
+    "vitest-mock-extended": "^2.0.2"
+  }
+}
