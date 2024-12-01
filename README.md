@@ -1,7 +1,12 @@
 # Prompt Evaluator 🚀🤖  
-*Your AI module for evaluating prompts like a pro!*  
+<p align="center">
+  <b>Your AI module for evaluating prompts like a pro!</b>
+</p>
 
----
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AdiPat/prompt-evaluator/refs/heads/main/assets/prompt-evaluator.png" />
+</p>
 
 ## ✨ Introduction  
 
