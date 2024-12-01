@@ -1,5 +1,6 @@
-import { generateText } from "ai";
+import { generateText, generateObject } from "ai";
 
 export const ai = {
   generateText,
+  generateObject,
 };
