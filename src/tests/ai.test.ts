@@ -5,4 +5,8 @@ describe("ai should", () => {
   it("have generateText method", () => {
     expect(ai.generateText).toBeDefined();
   });
+
+  it("have generateObject method", () => {
+    expect(ai.generateObject).toBeDefined();
+  });
 });
