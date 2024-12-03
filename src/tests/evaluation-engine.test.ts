@@ -83,4 +83,68 @@ describe("evaluation engine", () => {
       });
     });
   });
+
+  describe("comparePrompts should", () => {
+    it("should be defined", () => {
+      const evaluationEngine = new EvaluationEngine();
+      expect(evaluationEngine.comparePrompts).toBeDefined();
+    });
+
+    it("should return a winner prompt as string", async () => {
+      const evaluationEngine = new EvaluationEngine();
+      const source = {
+        prompt: "What is the meaning of life?",
+      };
+      const target = {
+        prompt: "What is the meaning of life?",
+      };
+      const winnerPrompt = await evaluationEngine.comparePrompts(
+        source,
+        target
+      );
+      expect(winnerPrompt).toEqual(expect.any(String));
+    });
+
+    it("should call evaluatePrompt on both 'source' and 'destination' prompts", async () => {
+      const evaluatePromptSpy = vi.spyOn(
+        EvaluationEngine.prototype,
+        "evaluatePrompt"
+      );
+      const evaluationEngine = new EvaluationEngine();
+      const source = {
+        prompt: "What is the meaning of life?",
+      };
+      const target = {
+        prompt: "What is the meaning of life?",
+      };
+      await evaluationEngine.comparePrompts(source, target);
+      expect(evaluatePromptSpy).toHaveBeenCalledTimes(2);
+      expect(evaluatePromptSpy).nthCalledWith(1, source);
+      expect(evaluatePromptSpy).nthCalledWith(2, target);
+    });
+
+    it("compared the prompts when both have 'output' provided", async () => {
+      const evaluatePromptSpy = vi.spyOn(
+        EvaluationEngine.prototype,
+        "evaluatePrompt"
+      );
+      const evaluationEngine = new EvaluationEngine();
+      const source = {
+        prompt: "What is the meaning of life?",
+        output: "The meaning of life is 42.",
+      };
+      const target = {
+        prompt: "What is the meaning of sports?",
+        output: "The meaning of life is 60.",
+      };
+      const winnerPrompt = await evaluationEngine.comparePrompts(
+        source,
+        target
+      );
+      expect(winnerPrompt).toEqual(expect.any(String));
+      expect(evaluatePromptSpy).toHaveBeenCalledTimes(2);
+      expect(evaluatePromptSpy).nthCalledWith(1, source);
+      expect(evaluatePromptSpy).nthCalledWith(2, target);
+    });
+  });
 });

@@ -25,6 +25,16 @@ export class EvaluationEngine {
     };
   }
 
+  async comparePrompts(
+    source: EvaluatePromptInput,
+    target: EvaluatePromptInput
+  ): Promise<string> {
+    const sourceEval = await this.evaluatePrompt(source);
+    const targetEval = await this.evaluatePrompt(target);
+    const sourceIsBetter = sourceEval.score > targetEval.score;
+    return sourceIsBetter ? source.prompt : target.prompt;
+  }
+
   private buildEvaluationParams(input: EvaluatePromptInput) {
     let system =
       "You are an LLM-judge. Given a prompt, provide a score on 'how good' the prompt is. The score should be between 0 and 1.";
