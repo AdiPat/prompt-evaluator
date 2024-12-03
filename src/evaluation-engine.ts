@@ -5,6 +5,7 @@ import {
   simplePromptEvalSchema,
   simplePromptEvalSchemaWithOutput,
 } from "./models";
+import { promptStore } from "./prompt-store";
 
 export class EvaluationEngine {
   async evaluatePrompt(input: EvaluatePromptInput): Promise<EvaluationResult> {
@@ -36,16 +37,17 @@ export class EvaluationEngine {
   }
 
   private buildEvaluationParams(input: EvaluatePromptInput) {
-    let system =
-      "You are an LLM-judge. Given a prompt, provide a score on 'how good' the prompt is. The score should be between 0 and 1.";
-    let fullPrompt = `Prompt: ${input.prompt}`;
+    let system = promptStore.evaluatePrompt.withoutOutput.system;
+    let fullPrompt = promptStore.evaluatePrompt.withoutOutput.prompt(
+      input.prompt
+    );
     let schema = simplePromptEvalSchema;
 
     if (input.output) {
-      system =
-        "You are an LLM-judge. Given a prompt, provide a score on 'how good' the prompt is. The score should be between 0 and 1. Along with the prompt, you will be given an output of what an LLM has generated. Your task is to evaluate the LLM which generated the output. ";
-      fullPrompt = [`Prompt: ${input.prompt}`, `Output: ${input.output}`].join(
-        "\n"
+      system = promptStore.evaluatePrompt.withOutput.system;
+      fullPrompt = promptStore.evaluatePrompt.withOutput.prompt(
+        input.prompt,
+        input.output
       );
       schema = simplePromptEvalSchemaWithOutput;
     }
