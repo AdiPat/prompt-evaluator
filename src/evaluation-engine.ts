@@ -5,11 +5,15 @@ import {
   simplePromptEvalSchema,
   simplePromptEvalSchemaWithOutput,
 } from "./models";
+import { z } from "zod";
 import { promptStore } from "./prompt-store";
 
 export class EvaluationEngine {
-  async evaluatePrompt(input: EvaluatePromptInput): Promise<EvaluationResult> {
-    const { system, fullPrompt, schema } = this.buildEvaluationParams(input);
+  async evaluatePrompt(
+    evaluationInput: EvaluatePromptInput
+  ): Promise<EvaluationResult> {
+    const { system, fullPrompt, schema } =
+      this.buildEvaluationParams(evaluationInput);
 
     const { object: evaluationResult } = await ai.generateObject({
       model: ai.models.gpt_4o_mini,
@@ -19,8 +23,8 @@ export class EvaluationEngine {
     });
 
     return {
-      prompt: input.prompt,
-      output: input.output,
+      prompt: evaluationInput.prompt,
+      output: evaluationInput.output,
       score: evaluationResult.score,
       feedback: evaluationResult.feedback,
     };
@@ -36,18 +40,22 @@ export class EvaluationEngine {
     return sourceIsBetter ? source.prompt : target.prompt;
   }
 
-  private buildEvaluationParams(input: EvaluatePromptInput) {
+  private buildEvaluationParams(evaluationInput: EvaluatePromptInput): {
+    system: string;
+    fullPrompt: string;
+    schema: z.Schema<any>;
+  } {
     let system = promptStore.evaluatePrompt.withoutOutput.system;
     let fullPrompt = promptStore.evaluatePrompt.withoutOutput.prompt(
-      input.prompt
+      evaluationInput.prompt
     );
     let schema = simplePromptEvalSchema;
 
-    if (input.output) {
+    if (evaluationInput.output) {
       system = promptStore.evaluatePrompt.withOutput.system;
       fullPrompt = promptStore.evaluatePrompt.withOutput.prompt(
-        input.prompt,
-        input.output
+        evaluationInput.prompt,
+        evaluationInput.output
       );
       schema = simplePromptEvalSchemaWithOutput;
     }
