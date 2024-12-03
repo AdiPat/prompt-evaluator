@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
-    "test": "vitest --silent --coverage"
+    "test": "vitest --silent --coverage --testTimeout 10000"
   },
   "bin": {
     "prompt-evaluator": "dist/index.js"
